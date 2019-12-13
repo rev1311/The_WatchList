@@ -78,14 +78,34 @@ $(document).on("click", ".movieButton", function() {
     method: "GET"
   }).then(function(response) {
     createResult(response);
+    createDeleteButton(response);
   });
+});
+
+function createDeleteButton(response) {
+  var movie = response.Title;
+  var div = $("<div>");
+  var btnMovie = $("<button>");
+
+  btnMovie.text("delete from list");
+  btnMovie.addClass("deleteButton");
+  btnMovie.attr("value", movie);
+  div.prepend(btnMovie);
+  $("#results").append(div);
+}
+
+$(document).on("click", ".deleteButton", function() {
+  // movies.remove($(this).val());
+  movies.splice(movies.indexOf($(this).val()), 1);
+  renderMovieList();
+  console.log("Hey");
 });
 
 function saveList() {
   localStorage.setItem("movies", JSON.stringify(movies));
 }
 
-$(document).on("click", "#reset", function() {
+$(document).on("click", "#clearList", function() {
   localStorage.clear();
   movies = [];
   renderMovieList();
