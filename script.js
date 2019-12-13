@@ -70,8 +70,15 @@ function renderMovieList() {
 
 $(document).on("click", ".movieButton", function() {
   $("#results").empty();
-  console.log($(this).val());
-  createResult($(this).val());
+  currentMovie = $(this).val();
+  var queryURL =
+    "https://www.omdbapi.com/?t=" + currentMovie + "&plot=short&apikey=trilogy";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function(response) {
+    createResult(response);
+  });
 });
 
 function saveList() {
