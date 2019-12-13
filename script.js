@@ -1,5 +1,3 @@
-var inputSearch = "pulp fiction";
-
 if (!localStorage.getItem("movies")) {
   var movies = [];
 } else {
@@ -15,6 +13,12 @@ $(document).on("click", "#searchButton", function() {
   var queryURL =
     "https://www.omdbapi.com/?t=" + currentMovie + "&plot=short&apikey=trilogy";
   console.log(queryURL);
+  // var queryURL =
+  //   "https://api.fandango.com/movies/v2/" +
+  //   currentMovie +
+  //   "?api_key=4e368grcz98v9gvhbhntzd2t&sig=18cad9c44a200825f2e2db93c256bd722fb8e0c5df42a3fbba03a7d8c2e71148";
+  // console.log(queryURL);
+
   $.ajax({
     url: queryURL,
     method: "GET"
@@ -100,6 +104,13 @@ $(document).on("click", ".deleteButton", function() {
   renderMovieList();
   console.log("Hey");
 });
+
+function sortAlphabetical(arr) {
+  var newMovies = arr.sort();
+  console.log(newMovies);
+}
+
+function sortByGenre(arr) {}
 
 function saveList() {
   localStorage.setItem("movies", JSON.stringify(movies));
