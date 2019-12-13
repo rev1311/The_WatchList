@@ -84,3 +84,9 @@ $(document).on("click", ".movieButton", function() {
 function saveList() {
   localStorage.setItem("movies", JSON.stringify(movies));
 }
+
+$(document).on("click", "#reset", function() {
+  localStorage.clear();
+  movies = [];
+  renderMovieList();
+});
