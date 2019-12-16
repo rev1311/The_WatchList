@@ -1,6 +1,12 @@
-.is-medium{
-    width: 200px;
+#title{
+    color:#e6e6e6
+
+    !important;
+
 };
-.select{
-    margin-left: 0%;
-}
+table{
+    color: aqua
+    !important;
+
+};
+
