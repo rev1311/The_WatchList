@@ -1,3 +1,4 @@
+// checks local storage to see if we have a movielist. if so, grab it, if not, make blank array
 if (!localStorage.getItem("movies")) {
   var movies = [];
 } else {
@@ -6,61 +7,81 @@ if (!localStorage.getItem("movies")) {
 console.log(movies);
 renderMovieList();
 
+// when search button is clicked
 $(document).on("click", "#searchButton", function() {
   event.preventDefault();
+
+  // get movie name
   var currentMovie = $("#searchBar").val();
 
+  // make url
   var queryURL =
     "https://www.omdbapi.com/?t=" + currentMovie + "&plot=short&apikey=trilogy";
   console.log(queryURL);
-  // var queryURL =
-  //   "https://api.fandango.com/movies/v2/" +
-  //   currentMovie +
-  //   "?api_key=4e368grcz98v9gvhbhntzd2t&sig=18cad9c44a200825f2e2db93c256bd722fb8e0c5df42a3fbba03a7d8c2e71148";
-  // console.log(queryURL);
 
+  // make call for info
   $.ajax({
     url: queryURL,
     method: "GET"
   }).then(function(response) {
     console.log(response);
+
+    // take call info, run into a function to display result of search
     createResult(response);
   });
 });
 
+// FUNCTION creastes search result
 function createResult(response) {
+  // empty the space
   $("#results").empty();
 
+  // make new elements
   var div = $("<div>");
   var img = $("<img>");
   var text = $("<p>");
   var btnAdd = $("<button>");
 
+  // give elements attr
   text.text(response.Title);
   img.attr("src", response.Poster);
   btnAdd.text("Add");
   btnAdd.addClass("addButton");
   btnAdd.attr("value", response.Title);
 
+  // prepend elements to page
   div.prepend(text);
   div.prepend(img);
   div.prepend(btnAdd);
   $("#results").prepend(div);
 }
 
+// when you click add
 $(document).on("click", ".addButton", function() {
   event.preventDefault();
+
+  // defining movie name
   var movie = $(this).val();
+
+  // double checks if movie already exists in movies array
   if (movies.indexOf(movie) == -1) {
     movies.push(movie);
-    console.log(movies);
+
+    // re-render the list
     renderMovieList();
+    // save list to local storage
     saveList();
-  } else alert("you already have this movie added");
+  }
+  // if the movie already exists, alert
+  else {
+    alert("you already have this movie added");
+  }
 });
 
+// FUNCTION CREATES movie list
 function renderMovieList() {
   $("#list").empty();
+
   for (var i = 0; i < movies.length; i++) {
     var btnMovie = $("<button>");
 
@@ -72,20 +93,25 @@ function renderMovieList() {
   }
 }
 
+// FUNCTION when you click on a movie in your list
 $(document).on("click", ".movieButton", function() {
   $("#results").empty();
   currentMovie = $(this).val();
+  // research
   var queryURL =
     "https://www.omdbapi.com/?t=" + currentMovie + "&plot=short&apikey=trilogy";
   $.ajax({
     url: queryURL,
     method: "GET"
   }).then(function(response) {
+    // create results display
     createResult(response);
+    // create delete button
     createDeleteButton(response);
   });
 });
 
+// FUNCTION creates a delete button
 function createDeleteButton(response) {
   var movie = response.Title;
   var div = $("<div>");
@@ -98,6 +124,7 @@ function createDeleteButton(response) {
   $("#results").append(div);
 }
 
+// FUNCTION delete the movie
 $(document).on("click", ".deleteButton", function() {
   // movies.remove($(this).val());
   movies.splice(movies.indexOf($(this).val()), 1);
@@ -105,6 +132,7 @@ $(document).on("click", ".deleteButton", function() {
   console.log("Hey");
 });
 
+// sort alphabetical
 function sortAlphabetical(arr) {
   var newMovies = arr.sort();
   console.log(newMovies);
@@ -112,10 +140,12 @@ function sortAlphabetical(arr) {
 
 function sortByGenre(arr) {}
 
+// saves to local storage
 function saveList() {
   localStorage.setItem("movies", JSON.stringify(movies));
 }
 
+// clears list
 $(document).on("click", "#clearList", function() {
   localStorage.clear();
   movies = [];
