@@ -86,7 +86,9 @@ function showPlaces(response) {
     for (var i = 0; i < response.subscription_web_sources.length; i++) {
       var div = $("<div>");
       var btnPlaces = $("<button>");
-      btnPlaces.addClass("placeButton button is-success level");
+      btnPlaces.addClass("placeButton button is-prime level");
+
+      btnPlaces.css("margin-top", "+=10px");
 
       btnPlaces.text(
         "Available on: " + response.subscription_web_sources[i].display_name
@@ -99,7 +101,9 @@ function showPlaces(response) {
     for (var i = 0; i < response.purchase_web_sources.length; i++) {
       var div = $("<div>");
       var btnPlaces = $("<button>");
-      btnPlaces.addClass("placeButton button is-success level");
+      btnPlaces.addClass("placeButton button is-prime level");
+
+      btnPlaces.css("margin-top", "+=10px");
 
       btnPlaces.text(
         "Available for purchase at: " +
@@ -133,7 +137,9 @@ function createResult(response) {
   text.addClass("hero is-grey-lighter title is-medium");
   text.text(response.original_title);
   img.attr("src", response.poster_400x570);
-  btnAdd.text("Add");
+  btnAdd.text("Add to My Watch List");
+  btnAdd.css("margin-top", "+=10px");
+
   btnAdd.addClass("addButton button is-success level");
   btnAdd.attr("value", response.original_title);
 
@@ -166,7 +172,7 @@ $(document).on("click", ".addButton", function() {
     div.addClass("notification is-warning");
     bt.addClass("delete");
     div.append(
-      "<strong>Warning!</strong>,You already have this movie in your list."
+      "<strong>Warning!</strong>,You already have this movie My list."
     );
     div.append(bt);
     $("#alertbox").append(div);
@@ -238,7 +244,9 @@ function createDeleteButton(response) {
   var div = $("<div>");
   var btnMovie = $("<button>");
 
-  btnMovie.text("delete from list");
+  btnMovie.css("margin-top", "+=10px");
+
+  btnMovie.text("Delete from My Watch List");
   btnMovie.addClass("deleteButton  button is-danger level");
   btnMovie.attr("value", movie);
   div.prepend(btnMovie);
