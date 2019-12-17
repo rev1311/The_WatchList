@@ -48,7 +48,7 @@ $(document).on("click", "#searchButton", function() {
     var currentMovieID = response.results[0].id;
 
     var queryURL =
-      "http://api-public.guidebox.com/v2/movies/" +
+      "https://api-public.guidebox.com/v2/movies/" +
       currentMovieID +
       "?api_key=fa7b0389753402bfb19845b4de1ce69238f02335";
     $.ajax({
@@ -97,7 +97,7 @@ function showPlaces(response) {
   var currentMovieID = response.id;
 
   var queryURL =
-    "http://api-public.guidebox.com/v2/movies/" +
+    "https://api-public.guidebox.com/v2/movies/" +
     currentMovieID +
     "?api_key=fa7b0389753402bfb19845b4de1ce69238f02335";
   $.ajax({
@@ -250,7 +250,7 @@ $(document).on("click", ".movieButton", function() {
     var currentMovieID = response.results[0].id;
 
     var queryURL =
-      "http://api-public.guidebox.com/v2/movies/" +
+      "https://api-public.guidebox.com/v2/movies/" +
       currentMovieID +
       "?api_key=fa7b0389753402bfb19845b4de1ce69238f02335";
     $.ajax({
