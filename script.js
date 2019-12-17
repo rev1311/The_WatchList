@@ -14,6 +14,7 @@ renderMovieList();
 // when search button is clicked ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $(document).on("click", "#searchButton", function() {
   event.preventDefault();
+  turnMapsOff();
 
   // get movie name
   var currentMovie = $("#searchBar").val();
@@ -42,22 +43,31 @@ $(document).on("click", "#searchButton", function() {
       createResult(response);
       showPlaces(response);
       if (response.in_theaters) {
-        findTheaters();
+        inTheaters();
+        turnMapsOn();
       }
     });
   });
 });
 
 // finds theaters~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function findTheaters() {
-  //   var queryURL =
-  //   "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&rankby&type=theatre&key=AIzaSyA1lBw6_XnwkUNxyDTLo6lrogpsVKGpjgE";
-  // $.ajax({
-  //   url: queryURL,
-  //   method: "GET"
-  // }).then(function(response) {
-  //   console.log(response);
-  // });
+function inTheaters() {
+  var div = $("<div>");
+  var btnTheaters = $("<button>");
+  btnTheaters.text("In Theaters Near You");
+  div.append(btnTheaters);
+  $("#results").append(div);
+}
+
+function turnMapsOn() {
+  console.log("heyyyy");
+  $("#maps").removeClass("displayOff");
+  $("#maps").addClass("displayOn");
+}
+
+function turnMapsOff() {
+  $("#maps").removeClass("displayOn");
+  $("#maps").addClass("displayOff");
 }
 
 // finds places to watch~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,20 +110,6 @@ function showPlaces(response) {
       div.append(btnPlaces);
       $("#results").append(div);
     }
-    // FREE MOVIE?
-    // for (var i = 0; i < response.free_web_sources.length; i++) {
-    //   var div = $("<div>");
-    //   var btnPlaces = $("<button>");
-    //   btnPlaces.addClass("placeButton button is-success level");
-
-    //   btnPlaces.text(
-    //     "Available for free at: " + response.free_web_sources[i].display_name
-    //   );
-    //   btnPlaces.attr("value", response.free_web_sources[i].link);
-
-    //   div.append(btnPlaces);
-    //   $("#results").append(div);
-    // }
   });
 }
 
@@ -134,6 +130,7 @@ function createResult(response) {
   var btnAdd = $("<button>");
 
   // give elements attr
+  text.addClass("hero is-grey-lighter title is-medium");
   text.text(response.original_title);
   img.attr("src", response.poster_400x570);
   btnAdd.text("Add");
@@ -200,6 +197,7 @@ function renderMovieList() {
 
 // FUNCTION when you click on a movie in your list~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $(document).on("click", ".movieButton", function() {
+  turnMapsOff();
   $("#results").empty();
   currentMovie = $(this).data("value");
 
@@ -227,7 +225,8 @@ $(document).on("click", ".movieButton", function() {
       showPlaces(response);
       createDeleteButton(response);
       if (response.in_theaters) {
-        findTheaters();
+        inTheaters();
+        turnMapsOn();
       }
     });
   });
