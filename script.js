@@ -9,12 +9,15 @@ if (!localStorage.getItem("movies")) {
 } else {
   var movies = JSON.parse(localStorage.getItem("movies"));
 }
+
+// render list on refresh
 renderMovieList();
 
 // when search button is clicked ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $(document).on("click", "#searchButton", function() {
   event.preventDefault();
   turnMapsOff();
+  $("#alertbox").empty();
 
   // get movie name
   var currentMovie = $("#searchBar").val();
@@ -29,6 +32,19 @@ $(document).on("click", "#searchButton", function() {
     method: "GET"
   }).then(function(response) {
     console.log(response);
+    if (response.results.length == 0) {
+      var div = $("<div>");
+      var bt = $("<button>");
+      div.addClass("notification is-warning");
+      bt.addClass("delete");
+      div.append("<strong>Warning!</strong> please enter a valid movie title.");
+      div.append(bt);
+      $("#alertbox").append(div);
+      bt.on("click", function() {
+        div.empty();
+        div.removeClass("notification is-warning");
+      });
+    }
     var currentMovieID = response.results[0].id;
 
     var queryURL =
@@ -62,12 +78,14 @@ function inTheaters() {
   $("#results").append(div);
 }
 
+// turns maps on~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function turnMapsOn() {
   console.log("heyyyy");
   $("#maps").removeClass("displayOff");
   $("#maps").addClass("displayOn");
 }
 
+// turns maps off~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
 function turnMapsOff() {
   $("#maps").removeClass("displayOn");
   $("#maps").addClass("displayOff");
@@ -215,6 +233,8 @@ function renderMovieList() {
 // FUNCTION when you click on a movie in your list~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $(document).on("click", ".movieButton", function() {
   turnMapsOff();
+  $("#alertbox").empty();
+
   $("#results").empty();
   currentMovie = $(this).data("value");
 
@@ -276,8 +296,6 @@ $(document).on("click", ".deleteButton", function() {
 function sortAlphabetical(arr) {
   var newMovies = arr.sort();
 }
-
-function sortByGenre(arr) {}
 
 // saves to local storage~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function saveList() {
