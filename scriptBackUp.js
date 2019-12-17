@@ -18,6 +18,21 @@ $(document).on("click", "#searchButton", function() {
   // get movie name
   var currentMovie = $("#searchBar").val();
 
+  // OLD API FOR MOVIE INFO
+  // var queryURL =
+  //   "https://www.omdbapi.com/?t=" + currentMovie + "&plot=short&apikey=trilogy";
+  // console.log(queryURL);
+
+  // $.ajax({
+  //   url: queryURL,
+  //   method: "GET"
+  // }).then(function(response) {
+  // console.log(response);
+  // take call info, run into a function to display result of search
+  // createResult(response);
+  // showPlaces(response);
+  // });
+
   // new api, movie info
   var queryURL =
     "https://api-public.guidebox.com/v2/search?type=movie&field=title&query=" +
@@ -60,6 +75,42 @@ function findTheaters() {
   // });
 }
 
+//funciton to show places to watch (amazon only)~~~~~~~~~~~~~~~~~~~~~~~~~~
+// function showPlaces(response) {
+//   var currentMovie = response.results[0].original_title;
+//   var settings = {
+//     async: true,
+//     crossDomain: true,
+//     url:
+//       "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?term=" +
+//       currentMovie +
+//       "&country=us",
+//     method: "GET",
+//     headers: {
+//       "x-rapidapi-host":
+//         "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com",
+//       "x-rapidapi-key": "9c0e05861cmshf463bbbdb056e61p1fb6bdjsn941199c3544b"
+//     }
+//   };
+//   $.ajax(settings).done(function(response) {
+//     console.log(response);
+
+//     if (response.results[0].name == currentMovie) {
+//       var div = $("<div>");
+//       var btnPlaces = $("<button>");
+//       btnPlaces.addClass("placeButton button is-success level");
+
+//       btnPlaces.text(
+//         "Available on: " + response.results[0].locations[0].display_name
+//       );
+//       btnPlaces.attr("value", response.results[0].locations[0].url);
+
+//       div.append(btnPlaces);
+//       $("#results").append(div);
+//     }
+//   });
+// }
+
 // finds places to watch~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function showPlaces(response) {
   var currentMovie = response.original_title;
@@ -73,19 +124,17 @@ function showPlaces(response) {
     url: queryURL,
     method: "GET"
   }).then(function(response) {
-    for (var i = 0; i < response.subscription_web_sources.length; i++) {
-      var div = $("<div>");
-      var btnPlaces = $("<button>");
-      btnPlaces.addClass("placeButton button is-success level");
+    var div = $("<div>");
+    var btnPlaces = $("<button>");
+    btnPlaces.addClass("placeButton button is-success level");
 
-      btnPlaces.text(
-        "Available on: " + response.subscription_web_sources[i].display_name
-      );
-      btnPlaces.attr("value", response.subscription_web_sources[i].link);
+    btnPlaces.text(
+      "Available on: " + response.subscription_web_sources[0].display_name
+    );
+    btnPlaces.attr("value", response.subscription_web_sources[0].link);
 
-      div.append(btnPlaces);
-      $("#results").append(div);
-    }
+    div.append(btnPlaces);
+    $("#results").append(div);
     for (var i = 0; i < response.purchase_web_sources.length; i++) {
       var div = $("<div>");
       var btnPlaces = $("<button>");
@@ -99,21 +148,8 @@ function showPlaces(response) {
 
       div.append(btnPlaces);
       $("#results").append(div);
+      console.log(response.purchase_web_sources[i].display_name);
     }
-    // FREE MOVIE?
-    // for (var i = 0; i < response.free_web_sources.length; i++) {
-    //   var div = $("<div>");
-    //   var btnPlaces = $("<button>");
-    //   btnPlaces.addClass("placeButton button is-success level");
-
-    //   btnPlaces.text(
-    //     "Available for free at: " + response.free_web_sources[i].display_name
-    //   );
-    //   btnPlaces.attr("value", response.free_web_sources[i].link);
-
-    //   div.append(btnPlaces);
-    //   $("#results").append(div);
-    // }
   });
 }
 
@@ -164,19 +200,7 @@ $(document).on("click", ".addButton", function() {
   }
   // if the movie already exists, alert
   else {
-    var div = $("<div>");
-    var bt = $("<button>");
-    div.addClass("notification is-warning");
-    bt.addClass("delete");
-    div.append(
-      "<strong>Warning!</strong>,You already have this movie in your list."
-    );
-    div.append(bt);
-    $("#alertbox").append(div);
-    bt.on("click", function() {
-      div.empty();
-      div.removeClass("notification is-warning");
-    });
+    alert("you already have this movie added");
   }
 });
 
@@ -192,7 +216,7 @@ function renderMovieList() {
     row.addClass("movieButton");
     // row.attr("value", movies[i]);
     row.data("value", movies[i]);
-    col.addClass("has-text-centered has-text-weight-bold");
+
     row.prepend(col);
     $("#td").prepend(row);
   }
@@ -202,6 +226,31 @@ function renderMovieList() {
 $(document).on("click", ".movieButton", function() {
   $("#results").empty();
   currentMovie = $(this).data("value");
+
+  // old api
+  // var queryURL =
+  //   "https://www.omdbapi.com/?t=" + currentMovie + "&plot=short&apikey=trilogy";
+  // $.ajax({
+  //   url: queryURL,
+  //   method: "GET"
+  // }).then(function(response) {
+  //   // create results display
+  //   createResult(response);
+  //   // create delete button
+  //   createDeleteButton(response);
+  // });
+  // var queryURL =
+  //   "https://api-public.guidebox.com/v2/search?type=movie&field=title&query=" +
+  //   currentMovie +
+  //   "&api_key=fa7b0389753402bfb19845b4de1ce69238f02335&sources=subscription,amazon_prime";
+  // $.ajax({
+  //   url: queryURL,
+  //   method: "GET"
+  // }).then(function(response) {
+  //   createResult(response);
+  //   showPlaces(response);
+  //   createDeleteButton(response);
+  // });
 
   var queryURL =
     "https://api-public.guidebox.com/v2/search?type=movie&field=title&query=" +
