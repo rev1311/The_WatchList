@@ -53,8 +53,11 @@ $(document).on("click", "#searchButton", function() {
 // finds theaters~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function inTheaters() {
   var div = $("<div>");
-  var btnTheaters = $("<button>");
-  btnTheaters.text("In Theaters Near You");
+  var btnTheaters = $("<p>");
+  btnTheaters.text("In Theaters Near You!");
+  btnTheaters.css("margin-top", "+=20px");
+  btnTheaters.css("font-size", "22px");
+
   div.append(btnTheaters);
   $("#results").append(div);
 }
@@ -130,12 +133,19 @@ function createResult(response) {
   // make new elements
   var div = $("<div>");
   var img = $("<img>");
-  var text = $("<p>");
+  var textTitle = $("<p>");
+  var textDescription = $("<p>");
   var btnAdd = $("<button>");
 
   // give elements attr
-  text.addClass("hero is-grey-lighter title is-medium");
-  text.text(response.original_title);
+  textDescription.text(response.overview);
+  textDescription.css("margin-bottom", "+=10px");
+
+  textTitle.addClass("hero is-grey-lighter title is-medium");
+  textTitle.css("margin-bottom", "+=10px");
+  textTitle.css("margin-top", "+=10px");
+
+  textTitle.text(response.original_title);
   img.attr("src", response.poster_400x570);
   btnAdd.text("Add to My Watch List");
   btnAdd.css("margin-top", "+=10px");
@@ -144,7 +154,8 @@ function createResult(response) {
   btnAdd.attr("value", response.original_title);
 
   // prepend elements to page
-  div.prepend(text);
+  div.prepend(textDescription);
+  div.prepend(textTitle);
   div.prepend(img);
   div.append(btnAdd);
   $("#results").prepend(div);
