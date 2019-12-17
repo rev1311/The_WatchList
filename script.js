@@ -124,18 +124,32 @@ function showPlaces(response) {
     url: queryURL,
     method: "GET"
   }).then(function(response) {
-    console.log(response);
     var div = $("<div>");
     var btnPlaces = $("<button>");
     btnPlaces.addClass("placeButton button is-success level");
 
     btnPlaces.text(
-      "Available on: " + response.results[0].locations[0].display_name
+      "Available on: " + response.subscription_web_sources[0].display_name
     );
-    btnPlaces.attr("value", response.results[0].locations[0].url);
+    btnPlaces.attr("value", response.subscription_web_sources[0].link);
 
     div.append(btnPlaces);
     $("#results").append(div);
+    for (var i = 0; i < response.purchase_web_sources.length; i++) {
+      var div = $("<div>");
+      var btnPlaces = $("<button>");
+      btnPlaces.addClass("placeButton button is-success level");
+
+      btnPlaces.text(
+        "Available for purchase at: " +
+          response.purchase_web_sources[i].display_name
+      );
+      btnPlaces.attr("value", response.purchase_web_sources[i].link);
+
+      div.append(btnPlaces);
+      $("#results").append(div);
+      console.log(response.purchase_web_sources[i].display_name);
+    }
   });
 }
 
