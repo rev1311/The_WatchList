@@ -1,3 +1,8 @@
+// This allows the chroma.js to change the background
+document.addEventListener("DOMContentLoaded", function(event) {
+  document.body.style.backgroundColor = chroma.random().luminance(0.6);
+});
+
 // checks local storage to see if we have a movielist. if so, grab it, if not, make blank array
 if (!localStorage.getItem("movies")) {
   var movies = [];
@@ -46,13 +51,13 @@ function createResult(response) {
   text.text(response.Title);
   img.attr("src", response.Poster);
   btnAdd.text("Add");
-  btnAdd.addClass("addButton");
+  btnAdd.addClass("addButton button is-success level");
   btnAdd.attr("value", response.Title);
 
   // prepend elements to page
   div.prepend(text);
   div.prepend(img);
-  div.prepend(btnAdd);
+  div.append(btnAdd);
   $("#results").prepend(div);
 }
 
@@ -62,7 +67,6 @@ $(document).on("click", ".addButton", function() {
 
   // defining movie name
   var movie = $(this).val();
-
   // double checks if movie already exists in movies array
   if (movies.indexOf(movie) == -1) {
     movies.push(movie);
@@ -80,23 +84,29 @@ $(document).on("click", ".addButton", function() {
 
 // FUNCTION CREATES movie list
 function renderMovieList() {
-  $("#list").empty();
+  $("#td").empty();
 
   for (var i = 0; i < movies.length; i++) {
-    var btnMovie = $("<button>");
+    var row = $("<tr>");
+    var col = $("<td>");
 
-    btnMovie.text(movies[i]);
-    btnMovie.addClass("movieButton");
-    btnMovie.attr("value", movies[i]);
+    col.text(movies[i]);
+    row.addClass("movieButton");
+    // row.attr("value", movies[i]);
+    row.data("value", movies[i]);
 
-    $("#list").prepend(btnMovie);
+    row.prepend(col);
+    $("#td").prepend(row);
+    console.log(i);
   }
 }
 
 // FUNCTION when you click on a movie in your list
 $(document).on("click", ".movieButton", function() {
   $("#results").empty();
-  currentMovie = $(this).val();
+  currentMovie = $(this).data("value");
+  console.log(currentMovie);
+
   // research
   var queryURL =
     "https://www.omdbapi.com/?t=" + currentMovie + "&plot=short&apikey=trilogy";
@@ -118,7 +128,7 @@ function createDeleteButton(response) {
   var btnMovie = $("<button>");
 
   btnMovie.text("delete from list");
-  btnMovie.addClass("deleteButton");
+  btnMovie.addClass("deleteButton  button is-danger level");
   btnMovie.attr("value", movie);
   div.prepend(btnMovie);
   $("#results").append(div);
@@ -129,13 +139,13 @@ $(document).on("click", ".deleteButton", function() {
   // movies.remove($(this).val());
   movies.splice(movies.indexOf($(this).val()), 1);
   renderMovieList();
-  console.log("Hey");
+  saveList();
+  console.log(movies);
 });
 
 // sort alphabetical
 function sortAlphabetical(arr) {
   var newMovies = arr.sort();
-  console.log(newMovies);
 }
 
 function sortByGenre(arr) {}
