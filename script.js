@@ -33,7 +33,48 @@ $(document).on("click", "#searchButton", function() {
 
     // take call info, run into a function to display result of search
     createResult(response);
+    showPlaces(response);
   });
+});
+
+//funciton to show places to watch NEWWW
+function showPlaces(response) {
+  var currentMovie = response.Title;
+  var settings = {
+    async: true,
+    crossDomain: true,
+    url:
+      "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?term=" +
+      currentMovie +
+      "&country=us",
+    method: "GET",
+    headers: {
+      "x-rapidapi-host":
+        "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com",
+      "x-rapidapi-key": "9c0e05861cmshf463bbbdb056e61p1fb6bdjsn941199c3544b"
+    }
+  };
+  $.ajax(settings).done(function(response) {
+    console.log(response);
+
+    if (response.results[0].name == currentMovie) {
+      var div = $("<div>");
+      var btnPlaces = $("<button>");
+      btnPlaces.addClass("placeButton button is-success level");
+
+      btnPlaces.text(
+        "Available on: " + response.results[0].locations[0].display_name
+      );
+      btnPlaces.attr("value", response.results[0].locations[0].url);
+
+      div.append(btnPlaces);
+      $("#results").append(div);
+    }
+  });
+}
+
+$(document).on("click", ".placeButton", function() {
+  location.href = $(this).val();
 });
 
 // FUNCTION creastes search result
