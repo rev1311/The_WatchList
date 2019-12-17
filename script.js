@@ -29,15 +29,27 @@ $(document).on("click", "#searchButton", function() {
     url: queryURL,
     method: "GET"
   }).then(function(response) {
-    console.log(response);
+    // console.log(response);
 
     // take call info, run into a function to display result of search
     createResult(response);
     showPlaces(response);
   });
+
+  // new api, trying to find sources
+  var queryURL =
+    "https://api-public.guidebox.com/v2/search?type=movie&field=title&query=" +
+    currentMovie +
+    "&api_key=fa7b0389753402bfb19845b4de1ce69238f02335&sources=subscription,amazon_prime";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function(response) {
+    console.log(response);
+  });
 });
 
-//funciton to show places to watch NEWWW
+//funciton to show places to watch (amazon only)
 function showPlaces(response) {
   var currentMovie = response.Title;
   var settings = {
