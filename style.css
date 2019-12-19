@@ -11,3 +11,17 @@ html {
 body {
   min-height: 100%;
 }
+.footers {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 50px;
+  width: 100%;
+  color: white;
+  text-align: center;
+  text-justify: auto;
+  background-color: #262626;
+  color: white;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
