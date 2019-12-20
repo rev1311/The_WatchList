@@ -26,7 +26,7 @@ $(document).on("click", "#searchButton", function() {
   var queryURL =
     "https://api-public.guidebox.com/v2/search?type=movie&field=title&query=" +
     currentMovie +
-    "&api_key=fa7b0389753402bfb19845b4de1ce69238f02335";
+    "&api_key=423737429793de8dc8210f09410b7509920f90d7";
   $.ajax({
     url: queryURL,
     method: "GET"
@@ -50,7 +50,7 @@ $(document).on("click", "#searchButton", function() {
     var queryURL =
       "https://api-public.guidebox.com/v2/movies/" +
       currentMovieID +
-      "?api_key=fa7b0389753402bfb19845b4de1ce69238f02335";
+      "?api_key=423737429793de8dc8210f09410b7509920f90d7";
     $.ajax({
       url: queryURL,
       method: "GET"
@@ -80,7 +80,6 @@ function inTheaters() {
 
 // turns maps on~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function turnMapsOn() {
-  console.log("heyyyy");
   $("#maps").removeClass("displayOff");
   $("#maps").addClass("displayOn");
 }
@@ -99,7 +98,7 @@ function showPlaces(response) {
   var queryURL =
     "https://api-public.guidebox.com/v2/movies/" +
     currentMovieID +
-    "?api_key=fa7b0389753402bfb19845b4de1ce69238f02335";
+    "?api_key=423737429793de8dc8210f09410b7509920f90d7";
   $.ajax({
     url: queryURL,
     method: "GET"
@@ -138,7 +137,7 @@ function showPlaces(response) {
   });
 }
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// takes you to new site~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $(document).on("click", ".placeButton", function() {
   location.href = $(this).val();
 });
@@ -241,7 +240,7 @@ $(document).on("click", ".movieButton", function() {
   var queryURL =
     "https://api-public.guidebox.com/v2/search?type=movie&field=title&query=" +
     currentMovie +
-    "&api_key=fa7b0389753402bfb19845b4de1ce69238f02335";
+    "&api_key=423737429793de8dc8210f09410b7509920f90d7";
   $.ajax({
     url: queryURL,
     method: "GET"
@@ -252,7 +251,7 @@ $(document).on("click", ".movieButton", function() {
     var queryURL =
       "https://api-public.guidebox.com/v2/movies/" +
       currentMovieID +
-      "?api_key=fa7b0389753402bfb19845b4de1ce69238f02335";
+      "?api_key=423737429793de8dc8210f09410b7509920f90d7";
     $.ajax({
       url: queryURL,
       method: "GET"
